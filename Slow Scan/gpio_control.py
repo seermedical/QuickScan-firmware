@@ -1,6 +1,8 @@
 import pigpio
 import time
+import subprocess
 
+subprocess.run(["sudo","pigpiod"])
 class gpio():
     def __init__(self):
         self.pi = pigpio.pi()
