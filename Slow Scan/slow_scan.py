@@ -63,23 +63,25 @@ def stop_test():
     print("Test stopped")
     start_test = 0
         
-    for i in range(24):
+    for i in range(23):
         if float(Ext_Elecs[i].get())>5.0:
             Ext_elec_labels[i].config(background='red')
         else:
-            Ext_elec_labels[idx].config(background='green')
+            Ext_elec_labels[i].config(background='green')
+    for i in range(23):
+        Ext_Elecs[i].set(str(10000.0))
 
 def rerun_electrode_sweep():
     global er
     global start_test
-    for i in range(23):
-        Ext_Elecs[i].set(str(10000.0))
+
     if start_test==1:
         run_test()
 def run_test():
     global er
     global start_test
     start_test = 1
+
     print("Test running")
     for idx, ext_elec in enumerate(ext_elecs):
         if idx!=19:
@@ -91,8 +93,8 @@ def run_test():
             on_elec = on_elec + 1
     if (on_elec>1):
          error.set("Electrodes Shorted")
-         color.set('red')
-         #root.update()
+         er.config(background='red')
+         root.update()
     root.after(10,rerun_electrode_sweep)
 Vin = 3.32
 root = tk.Tk()
@@ -111,7 +113,8 @@ global error
 color=tk.StringVar()
 color.set('green')
 error =tk.StringVar()
-er = tk.Label(root, textvariable = error,bg=color.get()).grid(row = 13, column = 0)
+er = tk.Label(root, textvariable = error)
+er.grid(row = 13, column = 0)
 var = tk.StringVar()
 var1 = tk.StringVar()
 var.set(str(10000.0))
