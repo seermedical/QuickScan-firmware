@@ -23,10 +23,13 @@ def calibrate_test():
             cal_avg = cal_avg+360.0*((Vin/(ADC.read_adc()+0.000001))-1)
         cal_val = cal_avg/10
     print("calibration done")
-def show_channel_active(idx):
+def show_channel_active(idx,R):
     for channel in Ext_elec_labels:
         channel.config(background=default_label_color)
-    Ext_elec_labels[idx].config(background='green')
+    if (R<5.0):
+        Ext_elec_labels[idx].config(background='green')
+    else:
+        Ext_elec_labels[idx].config(background='red')
     root.update()
 def test_electrode(idx):
     global er
@@ -46,22 +49,26 @@ def test_electrode(idx):
             if (R<R_old):
                 Ext_Elecs[idx-1].set(R_str)
                 Ext_elec_print[idx-1].set(R_str)
-            show_channel_active(idx-1)
+            show_channel_active(idx-1,R)
         else:
             R_old = float(Ext_Elecs[idx].get())
             if (R<R_old):
                 Ext_Elecs[idx].set(R_str)
                 Ext_elec_print[idx].set(R_str)
-            show_channel_active(idx)
+            show_channel_active(idx,R)
     #print(idx,"=",R)
 def stop_test():
     global er
     global start_test
     print("Test stopped")
     start_test = 0
-    error.set("No error")
+        
     for i in range(24):
-        Ext_elec_print[i].set("Not connected")
+        if float(Ext_Elecs[i].get())>5.0:
+            Ext_elec_labels[i].config(background='red')
+        else:
+            Ext_elec_labels[idx].config(background='green')
+
 def rerun_electrode_sweep():
     global er
     global start_test
