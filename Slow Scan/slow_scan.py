@@ -41,13 +41,17 @@ def test_electrode(idx):
         if R<0.0:
             R=0.0
         R_str = f"{R:.2f}"
-        if idx>19:    
-            Ext_Elecs[idx-1].set(R_str)
-            Ext_elec_print[idx-1].set(R_str)
+        if idx>19:
+            R_old = float(Ext_Elecs[idx-1].get())        
+            if (R<R_old):
+                Ext_Elecs[idx-1].set(R_str)
+                Ext_elec_print[idx-1].set(R_str)
             show_channel_active(idx-1)
         else:
-            Ext_Elecs[idx].set(R_str)
-            Ext_elec_print[idx].set(R_str)
+            R_old = float(Ext_Elecs[idx].get())
+            if (R<R_old):
+                Ext_Elecs[idx].set(R_str)
+                Ext_elec_print[idx].set(R_str)
             show_channel_active(idx)
     #print(idx,"=",R)
 def stop_test():
@@ -126,4 +130,3 @@ for i in range(23):
         label.grid(row=i-11,column=3)
 default_label_color = Ext_elec_labels[0].cget('background')
 root.mainloop()
-        
